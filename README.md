@@ -34,10 +34,9 @@
   - 동영상 소개 : https://www.youtube.com/watch?v=BYbgopx44vo
 
 * npm
-** --save, --save-dev, --global
-*** --global : 컴퓨터 어디에서든
-*** --save-dev : 개발환경에서만 필요한 경우
-*** --save : production 에서도 필요한 경우
+ - --global : 컴퓨터 어디에서든
+ - --save-dev : 개발환경에서만 필요한 경우
+ - --save : production 에서도 필요한 경우
 
 * source map
  - 트랜스파일된 코드로 실행하지만 디버깅은 원본 코드로...

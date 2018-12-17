@@ -28,6 +28,54 @@
   - Callback -> Promise -> async ~ await -> RxJS
   - RxJS 공부할 것!
   - 예외처리를 제대로하려면 Promise가 나은 방법이라고 생각함(강사님)
+* Module
+  - import : 상대경로이다.
+
+* Webpack
+  - 여러 개의 js파일들을 하나의 js파일로 번들링한다.
+  - 자바스크립트 모듈 번들러 : 모듈들이 포함하는 정적 자원(CSS, image 등) 들을 번들링하여 모듈을 생성함
+  - 가장 핵심은 loader와 plugin
+  - webpack 내부 : node + express인 개발 서버를 지원한다.
+  - HMR(Hot Module Replacement) 지원
+    + 코드가 수정될 때마다 페이지 자동갱신
+  - 책은 webpack 3.x 버전, PPT는 webpack 4.x 버전
+* Webpack 개발 서버
+  - 로컬 개발을 위한 webpack 옵션
+* cross-env
+  - 윈도우와 리눅스, MacOS는 환경변수를 설정하는 방법이 다르기 때문에 cross-env를 사용할 것을 권장한다.
+  - --hot : HMR(Hot Module Replacement) 지원. 코드 수정 후 저장하면 즉시 화면에 반영됨.
+* css 모듈화
+  - 모듈화 : 코드를 명시적으로 선언된 독립적인 단위로 분할하는 작업
+  - 컴포넌트 단위로 스타일을 적용하여야 한다.
+* Webpack 4대 loader
+  - entry
+  - output
+  - module(loaders)
+  - plugins
+* Plugin 이란
+  - webpack에서 사용가능한 추가기능 제공
+  - 빌드프로세스 과정에 플러그인을 주입시켜 Custom 동작이 가능하게 함
+  - loader VS plugin
+    + Loader는 리소스 파일(js, css, image, html등)을 로딩할때 동작
+    + plugin은 빌드 프로세스 과정에서 동작
+  - CommonChunkPlugin(Webpack 3.x), SplitChunkPlugin(Webpack 4.x) : 이름이 바뀜
+    + 하나의 js파일을 로딩하기에는 시간이 너무 오래 걸릴 수 있으니, 여러개의 파일로 나누어서 번들링하는 플러그인
+  - HtmlWebpackPlugin
+  - UglifyJsPlugin
+    + Webpack 4.x 버전에서 production mode로 빌드하면 난독화가 기본으로 적용되어 있다.
+  - ExtractTextPlugin
+    + 모든 CSS에 대한 require, import를 별도의 css 출력 파일로 옮겨서 JS에서 스타일을 인라인으로 추가할 필요가 없도록 해줌
+      = CSS 텍스트 파일을 묶어서 번들링한 뒤 하나 또는 여러개의 css 파일로 생성함.
+
+* create-react-app
+  - 내부적으로 yarn packager을 사용한다.
+  - npm install -g webpack
+  - yarn global add webpack
+  - windows에서 npm으로 yarn을 설치한 경우 yarn global add 는 할 수 없다. 해서는 안된다. 하지만 해야 할 경우는 yarnpkg.com 에서 window 버전의 yarn 설치 파일을 설치해야 한다.
+  - <pre><code>create-react-app tempapp</code></pre>
+  - 'react-scripts' 안에 많은 node module이 포함되어 있다.
+  - react-scripts eject 는 묶여있던 내용들을 풀어버린다. (되돌릴 수 없음. 주의 필요!)
+
 
 ## 용어
 * React
@@ -39,7 +87,7 @@
 * SPA (Single Page App)
 * Babel
   - https://babeljs.io/repl
-  - babel은 ES2015(ES6) 코드를 ES5 버전이 코드로 번역해주는 트랜스파일러임.
+  - babel은 ES2015 코드를 ES5(ES2016) 코드로 트랜스파일 함.
 * 가상 DOM (Virtual DOM)
   - 동영상 소개 : https://www.youtube.com/watch?v=BYbgopx44vo
 * npm
@@ -74,3 +122,6 @@
     -- <pre><code>var test2 = test.bind(obj)</code></pre>
 * 메소드 : obj 내의 속성이 function인 경우 메소드라고 한다.
 * export : export한 것은 public, 안한것은 private 라고 생각하면 된다.
+* yarn
+  - npm이 공식이지만, yarn이 속도가 더 빠르다.
+  - create-react-app은 내부적으로 yarn을 사용한다.

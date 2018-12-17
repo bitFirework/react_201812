@@ -11,7 +11,7 @@
   * VSCode 확장 : Babel ES6/ES7, Reactjs code snippets
   * 크롬에 추가 : React Developer Tools 
   ** 크롬 확장팩 세부사항에서 '파일 URL에 대한 액세스 허용' 체크
-
+  * npm 설정 : npm install -g babel-cli babel-preset-env babel-preset-stage-2
 
 ## 용어
 * React
@@ -25,3 +25,8 @@
   - https://babeljs.io/repl
 * 가상 DOM (Virtual DOM)
   - 동영상 소개 : https://www.youtube.com/watch?v=BYbgopx44vo
+* npm
+** --save, --save-dev, --global
+*** --global : 컴퓨터 어디에서든
+*** --save-dev : 개발환경에서만 필요한 경우
+*** --save : production 에서도 필요한 경우

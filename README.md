@@ -19,3 +19,4 @@
 * Babel
   - https://babeljs.io/repl
 * 가상 DOM (Virtual DOM)
+  - 동영상 소개 : https://www.youtube.com/watch?v=BYbgopx44vo

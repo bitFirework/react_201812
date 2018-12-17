@@ -8,7 +8,9 @@
   * node : v10.14.2
   * Editor : VSCode
   * nvm : 여러가지 node version을 바꿔가며 쓸 수 있다.
-
+  * VSCode 확장 : Babel ES6/ES7, Reactjs code snippets
+  * 크롬에 추가 : React Developer Tools 
+  ** 크롬 확장팩 세부사항에서 '파일 URL에 대한 액세스 허용' 체크
 
 ## 용어
 * React

@@ -15,6 +15,6 @@ stepanowon@hotmail.com
 * Component
 * JSX
 * Redux
-  https://babeljs.io/repl
 * SPA (Single Page App)
 * Babel
+  - https://babeljs.io/repl

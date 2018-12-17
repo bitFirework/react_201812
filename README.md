@@ -1,8 +1,8 @@
 # react_201812
 
 ## 강의 소개
-원형섭 강사
-stepanowon@hotmail.com
+* 원형섭 강사
+* email : stepanowon@hotmail.com
 
 
 

@@ -12,6 +12,7 @@
   * 크롬에 추가 : React Developer Tools 
   ** 크롬 확장팩 세부사항에서 '파일 URL에 대한 액세스 허용' 체크
 
+
 ## 용어
 * React
 * ES2015(ES6)

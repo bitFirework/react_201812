@@ -18,3 +18,4 @@ stepanowon@hotmail.com
 * SPA (Single Page App)
 * Babel
   - https://babeljs.io/repl
+* 가상 DOM (Virtual DOM)

@@ -12,7 +12,11 @@
   * 크롬에 추가 : React Developer Tools 
   ** 크롬 확장팩 세부사항에서 '파일 URL에 대한 액세스 허용' 체크
   * npm 설정 : npm install -g babel-cli babel-preset-env babel-preset-stage-2
-
+  * testapp npm 설정 : npm install babel-cli babel-core babel-preset-env babel-preset-stage-2 --save-dev
+  
+  
+  
+  
 ## 용어
 * React
 * ES2015(ES6)

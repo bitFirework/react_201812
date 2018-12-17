@@ -4,8 +4,10 @@
 * 원형섭 강사
 * email : stepanowon@hotmail.com
 
-
-
+# 개발 환경설정
+  * node : v10.14.2
+  * Editor : VSCode
+  * nvm : 여러가지 node version을 바꿔가며 쓸 수 있다.
 
 
 ## 용어

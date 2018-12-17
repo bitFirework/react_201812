@@ -4,7 +4,7 @@
 * 원형섭 강사
 * email : stepanowon@hotmail.com
 
-# 개발 환경설정
+## 개발 환경설정
   * node : v10.14.2
   * Editor : VSCode
   * nvm : 여러가지 node version을 바꿔가며 쓸 수 있다.
@@ -14,9 +14,11 @@
   * npm 설정 : npm install -g babel-cli babel-preset-env babel-preset-stage-2
   * testapp npm 설정 : npm install babel-cli babel-core babel-preset-env babel-preset-stage-2 --save-dev
   
-  
-  
-  
+## 1일차
+ * testapp
+ ** babel명령어 : babel src -d build
+ 
+ 
 ## 용어
 * React
 * ES2015(ES6)

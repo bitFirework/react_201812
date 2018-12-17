@@ -39,5 +39,12 @@
 * source map
  - 트랜스파일된 코드로 실행하지만 디버깅은 원본 코드로...
 * hoisting
- - <pre><code>console.log(A1); var A1 = "hello"; test() function test() { console.log("강사바보!!") } test() function test() { console.log("강사만세!!") }</code></pre>
+ - <pre><code>
+ console.log(A1); 
+ var A1 = "hello"; 
+ 
+ function test() { console.log("강사바보!!") } 
+ test() 
+ function test() { console.log("강사만세!!") }
+ </code></pre>
  - 변수를 선언하기도 전에 사용하지만 변수를 hoisting 과정에서 변수를 메모리 할당해놓은 상태라서 변수는 만들어진 상태.

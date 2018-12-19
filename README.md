@@ -212,6 +212,107 @@ var arr = { 111, ...obj, 999 };
     + ex) shortid, 유휴 id 등을 이용해서 고유키를 만들 수 있다.
   - this를 잘 구분해야 함. (arrow function 과 일반 function 일 때 bind 해주냐 마냐의 처리가 필요함)
 
+## 2일차
+### 6장 컴포넌트 심화
+* 컴포넌트 생명주기 메서드
+  - React v16.2와 v16.3 이후는 다르다.
+  - 책은 v16.2기준으로 작성되었다.
+  ---------------------- v16.2 이전
+  - 컴포넌트가 생성되거나 상태나 속성이 업데이트되거나 할 때 자동으로 호출되는 메서드
+  - 컴포넌트 마운트 시, Render (Virtual DOM에 Render를 한다.)
+  - constructor(props) : 생성자
+  - componentWillMount()
+  - componentDidMount()
+  - componentWillReceiveProps(nextProps)
+  - shouldComponentUpdate(nextProps, nextState)
+    + 여기에서 사용하기 위해 불변성을 사용.
+    + shallowCompare를 하여 바뀌지 않으면 return false로 변경되지 않았다는 것을 명시한다.
+  - componentWillUpdate(nextProps, nextState)
+  - componentDidUpdate(prevProps, prevState)
+  - ? 실제 DOM과 VirtualDOM의 내용이 다를 수도 있다. 동기는 어떻게 하나?
+  - componentWillUnmount
+  - componentDidCatch(error, info)
+  ---------------------- v16.3 이후
+  - v16.3 이후는 componentWillMount(), componentWillUpdate(), componentWillReceiveProps() 는 deprecated 되었다.
+  - 위의 3개가 Deprecate되었고 그에 대해 static getDerivedStateFromProps(), getSnapshotBeforeUpdate() 가 생겼다.
+* 가상DOM과 조정 작업
+  - React의 render는 VirtualDOM에 대한 render이다.
+  - 이전 VirtualDOM과 새로운 VirtualDOM을 비교하여 차이가 나는 부분만을 업데이트.
+  - Vue는 View가 업데이트 되는 부분은 자동으로 해준다.
+  - Virtual DOM
+    + DOM에 대한 추상화된 객체
+    + 그냥 Data이다. 실제 UI는 아님. 업데이트 속도가 빠르다.
+  - key특성
+    + key는 index가 아니라 고유한 값을 부여해야 한다.
+    + index의 경우는 list 중에 하나의 item이 삭제되면 index가 바뀌게 되기 때문이다.
+    + rendering을 최적화하기 위해서 사용한다.
+* PureComponent
+  - shouldComponentUpdate()가 shallowCompare 하도록 이미 구현되어 있음
+  - App.js에서 constructor가 아닌 곳에 bind를 하게 되면 App이 render하는 경우 bind가 계속 실행되어 새로운 객체를 return하게 된다. 그렇기에 consturctor부분에서 bind를 해줘야 한다.
+* 고차 컴포넌트
+  - HOC : Higher Order Component
+  - 컴포넌트를 입력값으로 받아 새로운 기능을 축하여 다시 리턴하는 컴포넌트
+* Portal
+  - render할 떄 자식 요소를 부모 컴포넌트의 DOM 트리 밖에 존재하는 DOM 요소 내에 추가할 수 있는 기능
+  - 언제 사용할까?
+    + Modal, Hover, Tooltip과 같이 메인화면과 독립적인 UI를 구성하고자 할 때.
+  - 이벤트 버블링
+    + body -> container -> button 인 상태에서 button의 onClick이 실행되면 container의 onClick과 body의 onClick이 실행되는 것.
+    + ? React는 VirtualDOM 수준에서 이벤트를 한 곳에 설정하기 떄문에 이벤트 버블링이 가능하다 (강사님 : <onClick={ }> : Virtual DOM으로 이벤트를 상위 한 곳에 설정해놓는다?)
+  - v15 이전에는 직접 만들었지만 v16이후는 Portal.js를 만들지 않는다
+  - v16 이후는 react-portal을 추가
+  ~~~
+  yarn add react-portal
+  npm install --save react-portal
+  ~~~
+* 컴포넌트의 설계
+  - 컴포넌트를 설계할 때 고려할 점
+    + 재사용성
+    + 관리성
+    + Rendering 과정 최적화
+      = ListItem을 List와 분리시킨 이유 : 재사용성 + Rendering 최적화
+    + 상속보다는 조합 방식을 사용
+      = UI와 관련없는 기능은 고차함수
+      = UI와 관련있는 기능은 조합
+    + 여러 컴포넌트에서 공통적으로 사용하는 기능은?
+      = 상속보다는 고차 컴포넌트!!
+      = 공통 로직의 분리가 핵심 : 로직을 구체화시키고 공통 로직을 찾아내 분리함.
+* React Performance Devtool
+  - 크롬 개발자 도구에도 Performance를 확인할 수 있도록 제공하지만
+  - 간편하게 보기위해서는 React Performance Devtool을 사용하는 것도 좋다.
+
+### 7장 axios를 이용한 통신
+* HTTP 통신 라이브러리
+  - axios 이외에도 jquery ajax, fetch, superagent 등이 있음
+    + jquery ajax는 Promise를 사용하지 않아서 권하지 않는다. 쓰면 안된다.
+  - 이 중 axios가 최근에 가장 많이 사용됨.
+  - es6-promise를 참조하면 IE에서도 사용가능하다.
+* 크로스 도메인 문제 해결
+  - Cross Domain 문제란?
+    + SOP : Same Origin Policy, 브라우저의 기본 보안 정책
+  - 크로스 도메인 문제 해결 방법
+    + 컨슈머 서버측에 프록시 요소 생성
+    + 서비스 제공자측에서 CORS기능을 제공
+    + 서비스 제공자측에서 JSONP기능을 제공
+  - 우리가 개발하는 것은 컨슈머 애플리케이션
+    + CORS나 JSONP는 서비스제공자가 지원해야 함.
+    + 컨슈머 서버에 프록시 요소를 설정할 수 있음
+  - 빌드 된 ReactApp을 다양한 웹 서버에 실제 배포할 경우는 node.js 서버나 다른 웹 기술로 서버를 구성해야 한다.
+    + Apache Tomcat
+      = Http Proxy Servlet
+      = https://github.com/mitre/HTTP-Proxy-Servlet
+    + Apache Web Server
+      = 내장된 Proxy 기능이 있다.
+      = proxy, proxyReverse
+    + node.js + express
+      = http proxy middleware 
+      = https://github.com/chimurai/http-proxy-middleware
+* 
+
+
+
+
+
 
 ## 용어 정리
 * React
@@ -270,6 +371,30 @@ var arr = { 111, ...obj, 999 };
 * Sass
   - 중첩구조 허용 등 css보다 발전된 형태
   - 다만, csss가 아니기에 트랜스파일 해야 한다.(sass-loader를 이용해서)
+* 서버사이드 렌더링
+  - React는 브라우저에서 렌더링을 한다.
+  - 서버사이드 렌더링은 ...?
+* 이벤트 버블링
+  - body -> container -> button 인 상태에서 button의 onClick이 실행되면 container의 onClick과 body의 onClick이 실행되는 것.
+* Cross Domain 문제란?
+  - SOP : Same Origin Policy, 브라우저의 기본 보안 정책
+* Origin
+  - 문자열, 이곳에서 page를 받았다.
+~~~
+location.origin
+~~~
+  - 브라우저에서 위의 명령어로 확인 가능.
+* 다양한 웹 서버 Proxy 설정
+  - Apache Tomcat
+    + Http Proxy Servlet
+    + https://github.com/mitre/HTTP-Proxy-Servlet
+  - Apache Web Server
+    + 내장된 Proxy 기능이 있다.
+    + proxy, proxyReverse
+  - node.js + express
+    + http proxy middleware 
+    + https://github.com/chimurai/http-proxy-middleware
+
 
 ## 기타
 * Local NPM Server
@@ -277,3 +402,17 @@ var arr = { 111, ...obj, 999 };
   local-npm
   npm set registry http://127.0.0.1:5080
   ~~~
+* React는 Publisher와 Front-end 개발자가 같이 일하기 힘든 구조다.
+  - Publisher가 react를 알던가
+  - Front-end 개발자가 Publish를 알던가
+  - 정리하면, 광범위하게 아는 사람이 일해야하는 구조이다.
+  - 그래서 강사님은 Vue를 선택함. (한국에서는 Publisher나 Front-end개발을 외주를 쓰는 경우가 많기 때문에)
+* 공짜로 서비스 할 수 있는 곳.
+  - netlify
+    + 무료로 쓸 수 있는 서비스.
+    + front-end
+  - heroku
+    + node에 express기반으로 서비스 만든다.
+    + back-end
+  - MongoDB Atlas
+    + Data크기 1GB 까지 무료로 쓸 수 있다.

@@ -307,7 +307,21 @@ var arr = { 111, ...obj, 999 };
     + node.js + express
       = http proxy middleware 
       = https://github.com/chimurai/http-proxy-middleware
-* 
+* 간단한 연락처 앱 예제
+
+### 8장 Redux
+* React 리뷰 : React의 핵심 철학
+  - 단방향 데이터 흐름
+  - 단점
+    + 컴포넌트들의 중첩 구조
+    + 최상위 컴포넌트의 상태가 자식 컴포넌트로 계층적으로 반복적으로 전달되어야 함. 이 과정에서 오류 발생 가능성이 높아짐. (ContactItem에서는 쓰는 delete를 ConteactList가 전달해야함.)
+* Flux란?
+  - Facebook에서 클라이언트-사이드 웹 어플리케이션을 만들기 위해 사용하는 어플리케이션 아키텍쳐. 단방향 데이터 흐름을 활용해 뷰컴포넌트를 구성하는 React를 보완할 수 있음.
+  - ex) 상태 변경을 투명하게 추적할 수 있다.(단일 Dispatcher에 로깅 기능을 추가한다면 상태에 대해 다 보인다.)
+  - Action - 단일 Dispatcher - Stores - Views
+* 간단한 flux 적용 예제
+  - dispatch : 뭔가를 전달한다.
+  - this.__emitChange() : 상태가 바뀌었음을 알린다.
 
 
 

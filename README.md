@@ -323,7 +323,124 @@ var arr = { 111, ...obj, 999 };
   - dispatch : 뭔가를 전달한다.
   - this.__emitChange() : 상태가 바뀌었음을 알린다.
 
+## 4일차
+* 복습
+  - LifeCycle
+    + 자주 사용하는
+      = constructor : 상태 초기화
+      = componentDidMount : UI 초기화
+      
+### 8장 Redux 이어서
+* Redux
+  - JS 앱을 위한 예측가능한 상태 컨테이너
+    + JS 앱에서 UI상태, 데이터 상태를 관리하기 위한 도구
+  - FLux의 아키텍처를 발전시키면서 복잡성을 줄임
+  - React에서만 사용하는 것이 아님.
+    + jQuery, Angular, Vue.js 에서도 사용됨.
+  - Flux 기능 + hot reloading + time travel debugging
+    + time travel debugging : 과거 시점으로 돌아가서 디버깅
+    + hot reloading : 디버깅하다가 소스코드를 변경하고 저장하더라도 이전에 상태를 유지시키는? (Store를 유지되도록 할 수 있다. Store와 Reducer가 분리되어 있기 때문에)
+  - Dispatch가 아니라 Store가 하나다. (단일 Store)
+  - Reducer란
+    + 상태 변경 로직을 가지고 있다.(Store는 상태를 가지고 있다.)
+    + 불변성을 확보해야 한다.
+* Redux 아키텍처
+  - Store
+    + Redux는 단하나의 Store를 가짐
+    + 각 Store는 각자의 범위를 갖고 내부의 상태를 통제한다.
+      = 단 하나의 Store를 가지기 때문에 애플리케이션의 전체 상태 트리를 관리하기 힘듦.
+        = 해야 할 작업을 Reducer에게 위임하여 해결한다.
+    + 강사님) 대규모 애플리케이션의 경우 Multi Reducer가 필수다.
+  - Reducer
+    + Reducer는 순수함수(Pure Function)이어야 한다.
+    + 액션이 Store에 전달되면 Store는 이것을 Reducer로 전달함.
+    + Store는 단 하나이지만 Reducer는 여러개일 수 있음
+    + 다중 Reducer
+  - 순수 함수의 의미
+    + 사이드 이펙이 없어야 한다. : 외부 네트워크, 데이터베이스 호출 등과 같이 외부 요소와 관련이 없어야 한다.
+    + 리턴 값은 오로지 함수의 파라미터 값에 의존해야 한다.
+    + 함수에 전달된 인자는 불변성으로 여겨진다. 즉 변경될 수 없다.
+      = time travel debugging을 지원하기 위해서 불변성을 확보해야 한다.
+  - Redux의 3가지 원칙
+    + Single Source of Truth(진실에 대한 단일 근원)
+      = Store가 하나라는 의미. Store를 지켜보면 상태를 알 수 있다.
+    + State is read-only(상태는 읽기 전용)
+    + Changes are made width Pure Function
+  - react-redux
+    + React Component(View)를 Store에 binding하기 위한 library
+  - Reducers 상태 전달 관련 (초보자가 자주 하는 실수)
+    + 상위 Reducer에서 하위 Reducer로 state를 전달할 때, 자신과 관련된 state가 아니라면 현재 state 그대로를 return해야 한다.
+  - React + Redux  (강사님 왈)
+    + 전체 Component를 Container로 만들 수 있다.(=> 이렇게하면 부모로부터 자식에게 props를 전달할 필요가 없다.)
+    + 하지만, 전체를 Container로 만들수는 없으니 주요 거점 컴포넌트만 컨테이너로 만들고 컨테이너 밑으로는 기존처럼 부모가 자식에게 props를 전달하는 식으로 만든다.
+    + ex) common(메뉴 영역), home(홈), about 등을 주요 거점 컴포넌트이므로 컨테이너로 만든다.
+* Redux 예제
+  - 5장에서 진행했던 todolist를 redux 사용하도록 변경해본다.
+  ~~~
+  yarn add redux react-redux
+  ~~~
+  - Store는 처음에 State가 아무것도 없기 때문에 initialState로 초기화를 한다.
+  - 비동기 처리하기 위해 middle-ware를 사용한다.
+    + 강의에서는 가장 쉬운 'redux-thunk'를 사용한다.
+  - React dev tool에서 표시 되는 우측 $r같은 경우 해당 객체를 나타낸다.
+    + console창에 입력해 보면 된다.(ex: $r.props.store 등)
+  ~~~
+  <Context.Provider> == $r
+  ~~~
+* 다중 리듀서 적용
+  - 애플리케이션에서 처리할 액션이 많거나 상태 트리의 구조가 복잡해지면?
+    + 여러 개의 Reducer로 분리해야 할 필요가 있음
+  - RootReduce는 하위 Reducer들을 컴바인한다.
+    + 컴바인할때, 상태 트리의 속성명을 결정한다.
+  - connect 고차컴포넌트 만들 경우 mapState 또는 mapDispatch가 없는 경우는 null로 설정해주면 된다.
+    + ex) 액션이 없는 경우 or 액션만 있는 경우
 
+> React+Redux 설계 순서
+  - State Tree 설계 -> Reducer설계를 해야 한다.
+  1. Component 설계, 분할
+  2. Component 별 Data, Action => 취합
+  3. State Tree 설계
+  4. Action을 바탕으로 Reducer 설계
+
+* Redux 미들웨어(Middleware)
+  - 액션 생성자가 액션을 전달한 후 Reducer에 도달하기 전에 작업을 지정할 수 있는 기능
+  - Store 객체에서 지정함
+
+* 비동기 처리
+  - Redux에서의 비동기 처리 방법
+    + 전통적인 방법
+      = Promise 패턴을 이용할 수 있음
+        = axios와 같은 AJAX 라이브러리를 이요할 때 Promise 객체를 리턴함.
+      = async~await~ 기법 적용
+      = 간단한 경우라면 위의 두 방법을 사용해도 됨
+    + 좀 더 복잡한 경우라면?
+      - redux-thunk : 이 책에서는 redux-thunk를 다룸
+      - redux-saga
+  - redux-thunk
+    + 비동기 처리를 위한 redux용 미들웨어
+      > dispatch로 함수를 전달한다.(redux-thunk의 개념)
+    + thunk
+      = 실행을 지연시키기 위해 표현식으로 wrap한 함수
+    + Redux의 Reducer는 순수함수이므로 Side effect를 일으켜서는 안됨.
+      = Reducer 수준에서 dispatch 할 수 없음
+      = 따라서 액션 생성자(ActionCreator)에서 처리해야 함.
+    > dispatch로 함수를 전달하냐, 객체를 전달하냐에 대한 구분과 처리는 redux-thunk에서 해줌.
+    > redux-promise-middleware도 많이 쓴다.
+* 연락처 앱 예제
+  - 액션은 상태를 변경하는 것으로 한정한다.
+  > Redux는 상태를 바꾸는 작업만 연관된다는 걸 염두에 둔다.
+* Redux Devtools
+  - Redux 를 이용한 앱을 개발할 때 개발을 강력하게 지원하는 개발 패키지 도구
+  - https://github.com/zalmoxisus/redux-devtools-extension
+  - 크롬 확장 프로그램 설치 + 약간의 코드 추가
+~~~
+yarn add -D redux-immutable-state-invariant redux-devtools-extension
+npm install --save-dev redux-immutable-state-invariant redux-devtools-extension
+~~~
+  - 'lodash'는 Action 이 여러개일 경우 사용
+  - 개발과 프로덕트를 구분지어서 코드를 구현하면 된다.(프로덕트인 경우는 devtool 동작하지 않도록)
+  - 코드를 수정해도 상태가 남아있다. (hot reloading)
+  - 과거 상태로 돌아갈 수 있다.(time travel debugging)
 
 
 

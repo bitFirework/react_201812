@@ -442,8 +442,167 @@ npm install --save-dev redux-immutable-state-invariant redux-devtools-extension
   - 코드를 수정해도 상태가 남아있다. (hot reloading)
   - 과거 상태로 돌아갈 수 있다.(time travel debugging)
 
+## 5일차
+### 9장 React Router
+1. React Router란?
+  - 정의 : URL 정보를 확인하여 특정 컴포넌트를 렌더링하는 기능을 제공하는 React 라이브러리
+  - SPA(Single Page Application) 앱의 핵심 기능 중 하나
+2. React 기초
+  - Route exact는 정확히 path가 일치할 때 실행
+    + URL이 정확하게 일치할 때만 렌더링 한다는 의미
+    + ex) '/about' 을 호출하면 '/'도 포함되기 때문에
+  ~~~
+    <Route exact path="/" component={Home}/> 
+    <Route path="/about" component={About}/>
+  ~~~
+3. 컴포넌트로 속성 전달하기
+  - component 대신 render라는 속성에 함수를 바인딩한다.
+  ~~~
+  <Route path="/about" component={About} />
+  <Route path="/about" render={ (props) => <About {...props} title="여우와 늙다리들" /> } />
+  ~~~
+4. URL 파라미터 이용
+  - Route 컴포넌트가 추가로 'history', 'location', 'match'라는 props를 전달한다.
+  - [강사님 npm youtube-player-react](https://www.npmjs.com/package/youtube-player-react)
 
+5. Route 객체의 속성
+  - match
+    + <Route /> 컴포넌트에 의해서 획득된 경로 정보를 보유
+    + params, isExact, path, url 속성을 제공
+  - location
+    + 앱이 현재 위치하고 있는 경로를 나타냄
+    + 브라우저에서 window.location 속성과 일치
+  - history
+    + 앱이 이동했던 URL 경로들의 이력 정보를 포함.
+    + go(), forward(), push()와 같은 메서드를 이용해 다른 경로로 이동할 수 있음
 
+6. Router 컴포넌트
+  - 다양한 Router
+    + BrowserRouter
+      = HTML5 history API를 사용하여 URL과 UI를 동기화한 상태로 유지함.
+    + HashRouter
+      = URL의 해시정보를 이용해 URL과 UI를 동기화한 상태로 유지함.
+      = 해시 : #, window.locatin.hash 값을 이용함
+        = HTML5 History API를 지원할 수 없는 이전 버전의 브라우저를 지원하기 위한 것임.
+        = 가능하다면 BrowserHistory를 사용할 것을 권장함.
+    + MemberRouter
+      = URL의 경로 정보를 주소 표시줄에 나타내지 않고 메모리에 유지함
+      = React Native나 하이브리드 앱과 같은 경우에 적합한 라우터
+      = 브라우저에 URL을 직접 입력하여 화면을 전환할 수 없음
+7. 기타 컴포넌트
+  - 기타 컴포넌트
+    + Switch 컴포넌트
+      = URL 경로에 매칭되는 첫 번째 자식 <Route />, <Redirect />만 렌더링 함.
+      = Switch 내부에 작성된 Route 컴포넌트 __순서대로__ 매칭 여부 확인
+    + Redirect 컴포넌트
+      = from 속성의 경로로 요청하면 to로 리디렉트 시킴
+  - path 속성이 없는 Routeㄹ르 Switch 마지막에 배치하면?
+    + 어느 경로에도 매칭되지 않을 때 매칭됨
+8. react-router-config
+  - react-router-config란?
+    + React Router 앱에서 정적 라우트(Static Route) 정보의 설정을 도와주는 라이브러리
+    + JS 객체의 정보를 이용해 라우트 컴포넌트의 조합을 생성해 냄
+  > renderRoutes는 내부적으로 Switch를 만들어낸다. 매칭되는게 하나면 하나만 렌더링하고 끝난다.
+  > '/songs/index.js' 가 있는 이유 songs 하위에 route 대상이 더 있기 때문에. ??? 왜 index.js란 이름을 쓴건지 모르겠음...
+9. redux + react-router
+  - Very Simple
+    + <Router /> 또는 <Route />를 포함하고 있는 Container를 Provider 컴포넌트로 감싸면 됨.
+    + 라우트 정보를 Redux 상태 정보와 동기화하도록 하려면?
+      = react-router-redux를 사용함.
+
+10. 연락처 앱에 router-config 적용
+  - router-config는 속성을 전달할 수 없다.(render를 사용할 수 없음)
+  - 그래서, Route 하위에 거점 컴포넌트를 만들어서 해결한다.
+
+### 10장 컴포넌트 테스트
+1. 테스트 개요
+  - 새로운 기능, 컴포넌트 추가 시마다 버그 발생 여부 확인 필요
+  - 자동화된 테스트
+  > Test Case -> Component
+  > TestCase기반으로 Component를 테스트한다.
+2. Jest 개요
+  - Jest란?
+    + React를 비롯해 모든 JS 코드를 테스트하기 위해 페이스북에서 사용되는 테스팅 프레임워크
+      = 가상 DOM 기반으로 테스트를 수행함
+      = JSX을 기본적으로 지원함
+      = jasmine기반으로 작성되었음
+      > 강사님 Jest + enzyme이 가장 강력한 조합
+      > enzyme은 airbnb에서 만듬.
+3. Jest 기능 테스트
+  - Global API
+  - Matcher?
+    + Jest에서 값이 같은지 비교하기 위해 사용하는 함수
+4. Snapshot 테스트
+  - Snapshot?
+    + 렌더링 된 컴포넌트의 출력 결과 UI
+    + 렌더러를 이용해 React 트리를 직렬화한 문자열 값
+  - Snapshot 테스트?
+    + UI가 예기치 않게 변경되지 않았는지 여부를 확인하기 위해 수행하는 테스트 방법 중의 하나
+  - jest에서 Snapshot 테스트를 위해 react-test-render를 사용함
+    ~~~
+    yarn add -D react-test-renderer
+    ~~~
+  - 한번 렌더링된 결과는 \__snapshots__ 디렉토리에 저장됨
+    + 다음 번 테스트 수행시 렌더링 된 결과와 snapshot을 비교하게 됨.
+5. DOM 테스트
+  - DOM 테스트?
+    + React Component가 렌더링 한 결과를 테스트함.
+    + enzyme과 react-addons-test-utils 사용
+    ~~~
+    yarn add -D enzyme enzyme-adapter-react-16 react-addons-test-utils
+    ~~~
+    + enzyme
+      = airbnb에서 만든 React 컴포넌트의 산출물을 탐색, 조작, 확인 주장(Assertion)을 쉽게 하는 테스팅 유틸리티
+  - Shallow Rendering
+    + 종속된 자식 컴포넌트는 렌더링 하지 않음
+      = 해당 컴포넌트의 렌더링 결과만 테스트할 수 있다는 장점이 있음.
+      = 자식 컴포넌트의 오류로 인한 테스트 중단을 예방할 수 있음.
+    + rendering 함수
+      = shallow() : Shallow 렌더링, 자신의 컴포넌트만 수행
+      = mount() : Full DOM 렌더링
+      = render() : Static 렌더링
+      = 각 렌더링 함수의 리턴 값 객체를 이용해 사용할 수 있는 다양한 메서드 제공
+6. create-react-app에서의 테스트
+  - jest 설정은 이미 되어 있음
+    + 스냅샷 테스트를 위한 react-test-renderer는 포함되어 있지 않음
+  - enzyme 관련 패키지는 설치되어 있지 않음
+  > create-react-app에서 테스트 코드는 컴포넌트와 같은 경로상에 있어도 되도록 설정되어 있다.
+  > jest 기본 설정은 '\__tests__' 폴더로 되어있다.
+
+### 11장 SSR
+1. SSR 개요
+  > 초기화면을 서버에서 렌더링해서 내려준다.
+  - 필수는 아니다.
+  > 비동기로 component를 로딩하는 기능도 있다.(빠른 로딩 가능)
+  > create-react-app에 포함
+2. Node.js + express 기초
+3. React SSR 기초
+4. 연락처 앱
+5. Router Context 추가
+6. Spring + SSR
+7. Next.js
+  - Next.js란?
+    + Next.js is a minimalistic framework for server-rendered React applications.
+      = 기존의 SSR은 복잡하다!! -> Next.js는 간편함
+      > React -> Next.js
+      > Vue -> Nuxt.js
+    + [next.js](https://learnnextjs.com)
+    + [next.js-github](https://github.com/zeit/next.js/)
+  - 간단한 사용
+    ~~~
+    yarn add react react-dom next
+    ~~~
+    + pages 디렉토리에 컴포넌트파일 생성!!
+
+### 12장 React Native
+> React Native 아키텍처 설명
+  > Virtual DOM이 핵심
+  > Virtual DOM을 bridge를 이용하여 각각의 OS에 맞는 View로 변환
+  > style을 css파일을 사용할 수 없다. 인라인으로 적용해야 해서 css 내용을 객체로 만들어서 넣어야 한다.
+  > 2가지로 에제 앱을 만들어 볼 수 있는데.
+    > react-native
+    > create-react-native-app : 이라는 도구가 있다. EXPO SDK 툴을 쓰는 프로젝트를 생성한다. 스마트폰으로 테스트하기 용이하다.
+  
 
 ## 용어 정리
 * React
@@ -525,7 +684,8 @@ location.origin
   - node.js + express
     + http proxy middleware 
     + https://github.com/chimurai/http-proxy-middleware
-
+* URI(Identifier) : 식별자
+* URL(Location) : 위치
 
 ## 기타
 * Local NPM Server
@@ -547,3 +707,19 @@ location.origin
     + back-end
   - MongoDB Atlas
     + Data크기 1GB 까지 무료로 쓸 수 있다.
+* Hybrid app 춘추전국시대
+  - React-Native
+    + Native UI + Biz Logic(JS)
+  - NativeScript-Vue
+    + Native UI + Biz Logic(JS)
+  - Ionic + Angular
+    + webview를 이용
+  - Flutter
+    + Dart언어를 사용 (순수 Native)
+* electron-react-boilerplate
+  - Electron과 React를 이용해서 DesktopAPP을 만들 수 있다.
+  - boilerplate로 기초 뼈대는 만들어져있다.
+
+* util : npm-run-all
+  > util : npm-run-all --serial build runssr
+  > npm run을 serial 하게 진행할 수 있다. build가 수행되고 runssr이 실행됨.
